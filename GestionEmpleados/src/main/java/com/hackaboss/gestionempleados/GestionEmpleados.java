@@ -11,21 +11,17 @@ import persistencia.ControladoraPersistencia;
 
 public class GestionEmpleados {
 
-    public static void main(String[] args) {
-        
-        System.out.println("Gestion de Empleados");
+     public static void main(String[] args) {
+       System.out.println("Gestion de Empleados");
         
         
         ControladoraPersistencia controlPer = new ControladoraPersistencia();
         Scanner teclado = new Scanner(System.in);
         
         int opcion = 0;
-        System.out.println("------------------------------------------------");
-        System.out.println("         🄶🄴🅂🅃🄸🄾🄽 🄴🄼🄿🄻🄴🄰🄳🄾🅂            ");
-        System.out.println("------------------------------------------------\t");
-        
         
         while (true) {
+            
             System.out.println("----------------------------------------------|");
             System.out.println("|     Seleccione la acción que desea realizar:|");
             System.out.println("----------------------------------------------|");
@@ -64,8 +60,16 @@ public class GestionEmpleados {
                         fecha = sdf.parse(fecha_inicio);  
                     } catch (ParseException e) {
                         System.out.println("Error al ingresar la fecha.");
-                        return;
+                        break;
                     }
+                    
+                    List<Persona> listaPersonas = controlPer.traerPersonas();
+                    for (Persona per : listaPersonas) {
+                        if (per.getNombre().equalsIgnoreCase(nombre) && per.getCargo().equalsIgnoreCase(cargo)) {
+                            throw new IllegalArgumentException("Ya existe un empleado con el mismo nombre y cargo.");
+                        }
+                    }
+                    
                     Persona persona = new Persona(opcion, nombre, apellido, cargo, salario, fecha);
                     controlPer.crearPersona(persona);
                     System.out.println("Empleado agregado correctamente.");
